@@ -59,7 +59,7 @@ class HttpClient{
 
         switch($method){
             case 'GET':
-                $curlOptions[CURLOPT_GET] = true;
+                $curlOptions[CURLOPT_HTTPGET] = true;
                 break;
             case 'POST':
                 $curlOptions[CURLOPT_POST] = true;

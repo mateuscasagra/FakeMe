@@ -1,3 +1,12 @@
+WPPCONECT
 1 - yarn install para baixar dependencias do server
 2 - Excluir repositorio criado pelo wppconnect rm -rf server/wppconnect-server/.git
 3 - executar generate token para pegar token da api
+
+
+APP
+- composer install
+
+Webhook
+- php -S localhost:8000
+- ngrok http 8000
