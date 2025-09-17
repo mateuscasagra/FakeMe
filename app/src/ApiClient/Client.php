@@ -20,6 +20,10 @@ class Client{
         return $this->client->doRequest('POST', 'start-session', $dados);
     }
 
+    public function statusSession(){
+        return $this->client->doRequest('GET', 'status-session');
+    }
+
     public function sendMessage($phoneNumber, $message){
         $dados = [
             'phone' => $phoneNumber,

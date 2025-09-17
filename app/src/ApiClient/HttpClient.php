@@ -9,7 +9,8 @@ class HttpClient{
     private const ROUTES = [
         'generate-token' => '/api/mySession/THISISMYSECURETOKEN/generate-token',
         'start-session' => '/api/mySession/start-session',
-        'send-message' => '/api/mySession/send-message'
+        'send-message' => '/api/mySession/send-message',
+        'status-session' => '/api/mySession/status-session'
     ];
 
     private function logError($message, $category, $data = null): void{
@@ -57,6 +58,9 @@ class HttpClient{
         ];
 
         switch($method){
+            case 'GET':
+                $curlOptions[CURLOPT_GET] = true;
+                break;
             case 'POST':
                 $curlOptions[CURLOPT_POST] = true;
                 $curlOptions[CURLOPT_POSTFIELDS] = json_encode($data);
