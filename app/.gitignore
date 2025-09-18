@@ -1,2 +1,4 @@
 .env
 vendor/
+text.txt
+log.txt

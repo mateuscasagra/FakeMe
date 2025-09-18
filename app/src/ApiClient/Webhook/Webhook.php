@@ -3,19 +3,17 @@ namespace ApiClient\Webhook;
 use Exception;
 
 class Webhook{
-    // private const LISTED_IPS = [
-    //    'Helena' => '18.215.79.89',
-    //    'Mateus' => '172.18.0.6'
-    // ];
+    private const LISTED_NUMBERS = [
+       'Aline' => '554188829669',
+    ];
 
-    // private const EXTRACTOR_MAP = [
-    //     'CONTACT_NEW' => ContactNewExtractor::class,
-    //     'CONTACT_UPDATE' => ContactUpdateExtractor::class,
-    // ];
+    private const EXTRACTOR_MAP = [
+        'ON_MESSAGE' => OnMessageExtractor::class,
+    ];
     
 
-    private static function validaIp($ipRequest): bool{
-        if(!in_array($ipRequest, self::LISTED_IPS)){
+    private static function numberValidate($phoneNumber): bool{
+        if(!in_array($phoneNumber, self::LISTED_NUMBERS)){
             return false;
         }
         return true;
@@ -30,24 +28,22 @@ class Webhook{
         return new $extractorClass();
     }
 
-    public static function processaPayload($payload, $ipRequest){
-        // if(!self::validaIp($ipRequest)){
-        //     throw new Exception("Ip not found: $ipRequest");
-        // }
+    public static function processaPayload($payload, $phoneNumber){
+        if(!self::numberValidate($phoneNumber)){
+            throw new Exception("Phone not found: $phoneNumber");
+        }
 
-        // $extractor = self::getExtractor($event);
-        // $data = $extractor->extract($payload);
+        $extractor = self::getExtractor($event);
+        $data = $extractor->extract($payload);
 
-        // if(empty($data)){
-        //     throw new Exception("Empty data");
-        // }
-
-        file_put_contents('hook.txt', $payload);
+        if(empty($data)){
+            throw new Exception("Empty data");
+        }
         
         switch($event){
-            case 'CONTACT_NEW':
-                $contato = new LogicaContato(new MapperContato($data['companyId']));
-                $contato->criaContato($data);
+            case 'onmessage':
+                $response = new ResponseMessage();
+                $response->sendMessage($data);
                 break;
         }
         

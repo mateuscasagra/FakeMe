@@ -11,7 +11,7 @@ $jsonPayload = file_get_contents('php://input');
 $payload = json_decode($jsonPayload);
 
 file_put_contents("text.txt", $jsonPayload);
-// $client->startSession('554184953092');
+
 
 
 
