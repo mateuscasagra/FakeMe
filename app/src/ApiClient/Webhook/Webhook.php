@@ -8,7 +8,7 @@ class Webhook{
     ];
 
     private const EXTRACTOR_MAP = [
-        'ON_MESSAGE' => OnMessageExtractor::class,
+        'onmessage' => OnMessageExtractor::class,
     ];
     
 
@@ -19,8 +19,7 @@ class Webhook{
         return true;
     }
 
-    private static function getExtractor($event)
-    {
+    private static function getExtractor($event){
         if (!isset(self::EXTRACTOR_MAP[$event])) {
             throw new Exception("Event not found: $event");
         }
@@ -28,27 +27,40 @@ class Webhook{
         return new $extractorClass();
     }
 
-    public static function processaPayload($payload, $phoneNumber){
-        if(!self::numberValidate($phoneNumber)){
-            throw new Exception("Phone not found: $phoneNumber");
-        }
+    private static function getTokens(){
+        $config = parse_ini_file('../../../.env');
+        return [
+            'client' => $config['TOKENWPP'],
+            'gemini' => $config['TOKENGEMINI']
+        ];
+    }
 
+    public static function processaPayload($payload, $event){
+        
         $extractor = self::getExtractor($event);
         $data = $extractor->extract($payload);
 
         if(empty($data)){
             throw new Exception("Empty data");
         }
-        
+
+        if(!self::numberValidate($data['phoneNumber'])){
+            throw new Exception("Phone not found: $phoneNumber");
+        }
+
         switch($event){
             case 'onmessage':
-                $response = new ResponseMessage();
-                $response->sendMessage($data);
+                $clientToken = self::getTokens()['client'];
+                $geminiToken = self::getTokens()['gemini'];
+                $agent = GeminiAgent::getInstance($geminiToken, $clientToken);
+                $response = $agent->generateResponse($data);
+                $agent->wait()->sendMessage($response);
                 break;
         }
+    }
+        
         
 
-    }
 
 
 }

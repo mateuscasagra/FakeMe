@@ -1,6 +1,22 @@
 <?php 
 namespace ApiClient\Webhook\Extractors;
 
-class OnMessageExtractor {
+class OnMessageExtractor implements Extractor {
 
+    public function extract($data){
+        $messageText = $data['body'];
+        $numberFrom  = $data['from'];
+        $phoneNumber = $this->phoneFormat($numberFrom);
+
+        return [
+            'messageText' => $messageText,
+            'phoneNumber' => $phoneNumber
+        ];
+    }
+
+    public function phoneFormat($phoneNumber){
+        $phoneSplited = split('@', $phoneNumber);
+        $phoneFormatted = $phoneSplited[0];
+        return $phoneFormatted;
+    }
 }
