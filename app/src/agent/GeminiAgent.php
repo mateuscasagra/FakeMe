@@ -2,7 +2,7 @@
 
 namespace Agent;
 use Gemini;
-use ApiClient;
+use ApiClient\Client;
 
 class GeminiAgent{
     private static $instance;
@@ -28,7 +28,7 @@ class GeminiAgent{
         return $this;
     }
 
-    public function getInstance($apiKeyGemini, $apiKeyClient){
+    public static function getInstance($apiKeyGemini, $apiKeyClient){
         if(self::$instance == null){
             self::$instance = new self($apiKeyGemini, $apiKeyClient);
         }
@@ -37,14 +37,14 @@ class GeminiAgent{
     } 
 
     public function generateResponse($messageText){
-        $prompt = include_once("prompt.php");
+        $prompt = include_once("promptFe.php");
         $finalPrompt = str_replace('[COLE A NOVA MENSAGEM DELA AQUI]', $messageText, $prompt);
         $result = $this->agent->generativeModel('gemini-1.5-flash')->generateContent($finalPrompt);
         return $result->text();
     }
 
-    public function sendMessage($iaMessage){
-        $this->client->sendMessage($iaMessage, '554188829669');
+    public function sendMessage($iaMessage, $phoneNumber){
+        $this->client->sendMessage('554185337004', $phoneNumber);
     }
 
 }

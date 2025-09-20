@@ -1,10 +1,14 @@
 <?php
 namespace ApiClient\Webhook;
+use ApiClient\Webhook\Extractors\OnMessageExtractor;
+use Agent\GeminiAgent;
 use Exception;
 
 class Webhook{
     private const LISTED_NUMBERS = [
-       'Aline' => '554188829669',
+    //    'Aline' => '554188829669',
+       'Fe' => '554185337004',
+       'Eu' => '554184953092'
     ];
 
     private const EXTRACTOR_MAP = [
@@ -28,7 +32,8 @@ class Webhook{
     }
 
     private static function getTokens(){
-        $config = parse_ini_file('../../../.env');
+        $config = parse_ini_file(ENV);
+
         return [
             'client' => $config['TOKENWPP'],
             'gemini' => $config['TOKENGEMINI']
@@ -36,7 +41,6 @@ class Webhook{
     }
 
     public static function processaPayload($payload, $event){
-        
         $extractor = self::getExtractor($event);
         $data = $extractor->extract($payload);
 
@@ -52,9 +56,9 @@ class Webhook{
             case 'onmessage':
                 $clientToken = self::getTokens()['client'];
                 $geminiToken = self::getTokens()['gemini'];
-                $agent = GeminiAgent::getInstance($geminiToken, $clientToken);
-                $response = $agent->generateResponse($data);
-                $agent->wait()->sendMessage($response);
+                $agent = GeminiAgent::getInstance($geminiToken,$clientToken);
+                $response = $agent->generateResponse($data['messageText']);
+                $agent->sendMessage($response, $data['phoneNumber']);
                 break;
         }
     }
