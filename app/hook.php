@@ -10,11 +10,11 @@ $jsonPayload = file_get_contents('php://input');
 $payload = json_decode($jsonPayload);
 $event = $payload->event;
 Webhook::processaPayload($payload, $event);
+file_put_contents('status.txt', $jsonPayload);
 
 
 // $config = parse_ini_file(ENV);
 // $client = new Client($config['TOKENWPP']);
-// file_put_contents('status.txt', $client->statusSession());
 // $client->startSession('554184953092');
 
 

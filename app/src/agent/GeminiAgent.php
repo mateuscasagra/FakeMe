@@ -37,14 +37,14 @@ class GeminiAgent{
     } 
 
     public function generateResponse($messageText){
-        $prompt = include_once("promptFe.php");
+        $prompt = include_once("prompt.php");
         $finalPrompt = str_replace('[COLE A NOVA MENSAGEM DELA AQUI]', $messageText, $prompt);
         $result = $this->agent->generativeModel('gemini-1.5-flash')->generateContent($finalPrompt);
         return $result->text();
     }
 
     public function sendMessage($iaMessage, $phoneNumber){
-        $this->client->sendMessage('554185337004', $phoneNumber);
+        $this->client->sendMessage($phoneNumber, $iaMessage);
     }
 
 }

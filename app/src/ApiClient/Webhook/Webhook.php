@@ -8,7 +8,8 @@ class Webhook{
     private const LISTED_NUMBERS = [
     //    'Aline' => '554188829669',
        'Fe' => '554185337004',
-       'Eu' => '554184953092'
+       'Eu' => '554184953092',
+       'Marco' => '554196474937'
     ];
 
     private const EXTRACTOR_MAP = [
@@ -58,7 +59,7 @@ class Webhook{
                 $geminiToken = self::getTokens()['gemini'];
                 $agent = GeminiAgent::getInstance($geminiToken,$clientToken);
                 $response = $agent->generateResponse($data['messageText']);
-                $agent->sendMessage($response, $data['phoneNumber']);
+                $agent->wait()->sendMessage($response, $data['phoneNumber']);
                 break;
         }
     }
