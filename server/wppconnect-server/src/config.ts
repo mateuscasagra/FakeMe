@@ -11,7 +11,7 @@ export default {
   maxListeners: 15,
   customUserDataDir: './userDataDir/',
   webhook: {
-    url: 'https://3e6841c50631.ngrok-free.app/hook.php',
+    url: 'https://dcb8fbdad1de.ngrok-free.app/hook.php',
     autoDownload: true,
     uploadS3: false,
     readMessage: true,
