@@ -6,7 +6,7 @@ use Exception;
 
 class Webhook{
     private const LISTED_NUMBERS = [
-    //    'Aline' => '554188829669',
+       'Aline' => '554188829669',
        'Fe' => '554185337004',
        'Eu' => '554184953092',
        'Marco' => '554196474937'
@@ -58,6 +58,10 @@ class Webhook{
                 $clientToken = self::getTokens()['client'];
                 $geminiToken = self::getTokens()['gemini'];
                 $agent = GeminiAgent::getInstance($geminiToken,$clientToken);
+                $statusWhatsapp = $agent->getStatusSession();
+                if($statusWhatsapp['status'] != 'CONNECTED'){
+                    exit;
+                }
                 $response = $agent->generateResponse($data['messageText']);
                 $agent->wait()->sendMessage($response, $data['phoneNumber']);
                 break;

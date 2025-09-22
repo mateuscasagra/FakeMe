@@ -18,12 +18,13 @@ class GeminiAgent{
 
     public function wait(){
         $listWaitTime = [
+            '5',
             '10',
             '15',
             '30',
-            '60'
         ];
-        $randomWaitTime = $listWaitTime[random_array($listWaitTime)];
+        $randomWaitTime = $listWaitTime[array_rand($listWaitTime)];
+        print_r($randomWaitTime);
         sleep($randomWaitTime * 60);
         return $this;
     }
@@ -44,7 +45,15 @@ class GeminiAgent{
     }
 
     public function sendMessage($iaMessage, $phoneNumber){
-        $this->client->sendMessage($phoneNumber, $iaMessage);
+        return $this->client->sendMessage($phoneNumber, $iaMessage);
+    }
+
+    public function getStatusSession(){
+        return $this->client->statusSession();
+    }
+
+    public function startSession($phoneNumber){
+        return $this->client->startSession($phoneNumber);
     }
 
 }
