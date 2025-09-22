@@ -18,10 +18,9 @@ class GeminiAgent{
 
     public function wait(){
         $listWaitTime = [
+            '2',
             '5',
             '10',
-            '15',
-            '30',
         ];
         $randomWaitTime = $listWaitTime[array_rand($listWaitTime)];
         print_r($randomWaitTime);
